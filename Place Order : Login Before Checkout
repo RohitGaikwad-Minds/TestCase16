@@ -1,0 +1,65 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class PlaceOrderTest {
+    public static void main(String[] args) {
+        // Set the path to your ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "path_to_chromedriver.exe");
+
+        // Instantiate ChromeDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the website
+        driver.get("https://automationexercise.com/");
+
+        // Add a product to the cart
+        WebElement addToCartButton = driver.findElement(By.xpath("//button[contains(text(), 'Add to Cart')]"));
+        addToCartButton.click();
+
+        // Navigate to the cart page
+        WebElement cartLink = driver.findElement(By.xpath("//a[@href='/cart']"));
+        cartLink.click();
+
+        // Proceed to checkout
+        WebElement checkoutButton = driver.findElement(By.xpath("//a[@href='/checkout']"));
+        checkoutButton.click();
+
+        // Fill in the login information
+        WebElement emailInput = driver.findElement(By.id("username"));
+        emailInput.sendKeys("your_email@example.com");
+
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        passwordInput.sendKeys("your_password");
+
+        // Submit the login form
+        WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Login')]"));
+        loginButton.click();
+
+        // Fill in the required information on the checkout page
+        WebElement nameInput = driver.findElement(By.id("billing_first_name"));
+        nameInput.sendKeys("John Doe");
+
+        WebElement addressInput = driver.findElement(By.id("billing_address_1"));
+        addressInput.sendKeys("123 Main St");
+
+        // Submit the checkout form
+        WebElement placeOrderButton = driver.findElement(By.xpath("//button[contains(text(), 'Place Order')]"));
+        placeOrderButton.click();
+
+        // Verify that the order is successfully placed
+        WebElement orderConfirmationMessage = driver.findElement(By.xpath("//div[@class='woocommerce-notice woocommerce-notice--success']"));
+        String expectedMessage = "Thank you. Your order has been received.";
+        String actualMessage = orderConfirmationMessage.getText();
+
+        if (actualMessage.equals(expectedMessage)) {
+            System.out.println("Order is successfully placed.");
+        } else {
+            System.out.println("Order is not successfully placed.");
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+}
